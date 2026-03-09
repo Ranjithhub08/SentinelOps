@@ -1,0 +1,34 @@
+INFO:     Started server process [39636]
+INFO:     Waiting for application startup.
+2026-03-09 16:19:52,841 - src.main - INFO - Initializing Root Cause Analysis Service...
+2026-03-09 16:19:52,842 - src.kafka_producer - INFO - Connected to Kafka at localhost:9092
+2026-03-09 16:19:52,842 - src.kafka_consumer - INFO - Starting Incident Consumer on topic: incidents.created
+INFO:     Application startup complete.
+2026-03-09 16:19:52,842 - kafka.consumer.subscription_state - INFO - Updating subscribed topics to: ('incidents.created',)
+2026-03-09 16:19:52,842 - src.kafka_consumer - INFO - Root Cause Analysis Consumer successfully connected to Kafka.
+INFO:     Uvicorn running on http://0.0.0.0:8005 (Press CTRL+C to quit)
+2026-03-09 16:19:52,846 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:19:52,893 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:19:52,893 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:19:52,949 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:19:53,055 - kafka.cluster - INFO - Group coordinator for root_cause_analysis_group is BrokerMetadata(nodeId='coordinator-1', host='localhost', port=9092, rack=None)
+2026-03-09 16:19:53,055 - kafka.coordinator - INFO - Discovered coordinator coordinator-1 for group root_cause_analysis_group
+2026-03-09 16:19:53,055 - kafka.coordinator - INFO - Starting new heartbeat thread
+2026-03-09 16:19:53,055 - kafka.coordinator.consumer - INFO - Revoking previously assigned partitions set() for group root_cause_analysis_group
+2026-03-09 16:19:53,055 - kafka.conn - INFO - <BrokerConnection node_id=coordinator-1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:19:53,161 - kafka.conn - INFO - <BrokerConnection node_id=coordinator-1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:19:53,161 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2026-03-09 16:19:53,266 - kafka.coordinator - INFO - (Re-)joining group root_cause_analysis_group
+2026-03-09 16:19:56,271 - kafka.coordinator - INFO - Elected group leader -- performing partition assignments using range
+2026-03-09 16:19:56,272 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:19:56,272 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:19:56,275 - kafka.coordinator - INFO - Successfully joined group root_cause_analysis_group with generation 5
+2026-03-09 16:19:56,275 - kafka.consumer.subscription_state - INFO - Updated partition assignment: [TopicPartition(topic='incidents.created', partition=0)]
+2026-03-09 16:19:56,275 - kafka.coordinator.consumer - INFO - Setting newly assigned partitions {TopicPartition(topic='incidents.created', partition=0)} for group root_cause_analysis_group
+2026-03-09 16:20:24,303 - src.kafka_consumer - INFO - Analyzed Incident 17cd9957-792d-4a6c-beda-72c67516dd30: Application exception (Confidence: 0.95)
+2026-03-09 16:20:24,305 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:20:24,305 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:20:24,305 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2026-03-09 16:20:24,475 - src.kafka_consumer - INFO - Analyzed Incident 8a5b8dd8-7ac2-4fa3-a2d1-b233d6ce1819: Resource saturation (Confidence: 0.85)
+2026-03-09 16:20:24,481 - src.kafka_consumer - INFO - Analyzed Incident 60c6606a-e59e-4c51-affb-49141938cfee: Slow downstream dependency (Confidence: 0.8)
+2026-03-09 16:20:24,484 - src.kafka_consumer - INFO - Analyzed Incident 4c07a701-5a35-4526-b56b-a3448228cfdb: Service instability (Confidence: 0.9)

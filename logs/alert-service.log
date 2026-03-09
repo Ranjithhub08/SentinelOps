@@ -1,0 +1,38 @@
+/Users/ranjithkumar/SentinelOps/services/alert-service/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO:     Started server process [39671]
+INFO:     Waiting for application startup.
+2026-03-09 16:20:03,699 - src.main - INFO - Initializing Alert Service...
+2026-03-09 16:20:03,699 - src.main - WARNING - SLACK_WEBHOOK_URL is missing. Slack alerts will be skipped.
+2026-03-09 16:20:03,699 - src.main - WARNING - SMTP_SERVER or ALERT_EMAIL is missing. Email alerts will be skipped.
+2026-03-09 16:20:03,700 - src.kafka_producer - INFO - Connected to Kafka at localhost:9092
+2026-03-09 16:20:03,700 - src.kafka_consumer - INFO - Starting Explained Incident Consumer on topic: incidents.explained
+INFO:     Application startup complete.
+2026-03-09 16:20:03,701 - kafka.consumer.subscription_state - INFO - Updating subscribed topics to: ('incidents.explained',)
+2026-03-09 16:20:03,701 - src.kafka_consumer - INFO - Alert Consumer successfully connected to Kafka.
+INFO:     Uvicorn running on http://0.0.0.0:8007 (Press CTRL+C to quit)
+2026-03-09 16:20:03,703 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:20:03,753 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:20:03,753 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:20:03,808 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:20:03,914 - kafka.cluster - INFO - Group coordinator for alert_service_group is BrokerMetadata(nodeId='coordinator-1', host='localhost', port=9092, rack=None)
+2026-03-09 16:20:03,915 - kafka.coordinator - INFO - Discovered coordinator coordinator-1 for group alert_service_group
+2026-03-09 16:20:03,915 - kafka.coordinator - INFO - Starting new heartbeat thread
+2026-03-09 16:20:03,915 - kafka.coordinator.consumer - INFO - Revoking previously assigned partitions set() for group alert_service_group
+2026-03-09 16:20:03,916 - kafka.conn - INFO - <BrokerConnection node_id=coordinator-1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:20:03,917 - kafka.conn - INFO - <BrokerConnection node_id=coordinator-1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:20:03,917 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2026-03-09 16:20:04,018 - kafka.coordinator - INFO - (Re-)joining group alert_service_group
+2026-03-09 16:20:07,034 - kafka.coordinator - INFO - Elected group leader -- performing partition assignments using range
+2026-03-09 16:20:07,038 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:20:07,038 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:20:07,043 - kafka.coordinator - INFO - Successfully joined group alert_service_group with generation 5
+2026-03-09 16:20:07,043 - kafka.consumer.subscription_state - INFO - Updated partition assignment: [TopicPartition(topic='incidents.explained', partition=0)]
+2026-03-09 16:20:07,043 - kafka.coordinator.consumer - INFO - Setting newly assigned partitions {TopicPartition(topic='incidents.explained', partition=0)} for group alert_service_group
+2026-03-09 16:20:24,320 - src.kafka_consumer - INFO - Alerted for incident 17cd9957-792d-4a6c-beda-72c67516dd30 to channels: []
+2026-03-09 16:20:24,373 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2026-03-09 16:20:24,373 - kafka.conn - INFO - <BrokerConnection node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2026-03-09 16:20:24,373 - kafka.conn - INFO - <BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2026-03-09 16:20:24,495 - src.kafka_consumer - INFO - Alerted for incident 8a5b8dd8-7ac2-4fa3-a2d1-b233d6ce1819 to channels: []
+2026-03-09 16:20:24,496 - src.kafka_consumer - INFO - Alerted for incident 60c6606a-e59e-4c51-affb-49141938cfee to channels: []
+2026-03-09 16:20:24,497 - src.kafka_consumer - INFO - Alerted for incident 4c07a701-5a35-4526-b56b-a3448228cfdb to channels: []

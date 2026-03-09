@@ -12,7 +12,7 @@ class LoggerProducer:
         try:
             self.producer = KafkaProducer(
                 bootstrap_servers=self.bootstrap_servers,
-                value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+                value_serializer=lambda v: json.dumps(v, default=str).encode('utf-8'),
                 api_version=(0, 10, 1) # added to avoid issues with some kafka distributions
             )
             logger.info(f"Connected to Kafka at {self.bootstrap_servers}")

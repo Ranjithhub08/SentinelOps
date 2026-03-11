@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-collector-service
+  labels:
+    app: metrics-collector-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: metrics-collector-service
+  template:
+    metadata:
+      labels:
+        app: metrics-collector-service
+    spec:
+      containers:
+      - name: metrics-collector-service
+        image: sentinelops/metrics-collector-service:latest
+        ports:
+        - containerPort: 8002
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka-service:9092"

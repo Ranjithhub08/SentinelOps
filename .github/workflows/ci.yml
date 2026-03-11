@@ -1,0 +1,68 @@
+name: SentinelOps CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [
+          'log-ingestion-service',
+          'metrics-collector-service',
+          'anomaly-detection-service',
+          'incident-management-service',
+          'root-cause-analysis-service',
+          'llm-explanation-service',
+          'alert-service'
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          cd services/${{ matrix.service }}
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 services/${{ matrix.service }} --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Run tests (Placeholder)
+        run: |
+          echo "Running tests for ${{ matrix.service }}"
+          # pytest 
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: |
+          cd frontend/incident-dashboard
+          npm install
+      - name: Build
+        run: |
+          cd frontend/incident-dashboard
+          npm run build
+
+  docker-build:
+    needs: [backend-lint-and-test, frontend-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker images
+        run: |
+          echo "Building Docker images for all services..."
+          # docker build -t sentinelops-log-ingestion ./services/log-ingestion-service
+          # This is a placeholder for actual docker build commands

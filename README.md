@@ -113,6 +113,30 @@ npm install
 npm run dev
 ```
 
+## 📊 Monitoring
+
+SentinelOps includes a pre-configured monitoring stack using **Prometheus** and **Grafana**:
+- **Prometheus**: Scrapes metrics from `log-ingestion-service`, `metrics-collector-service`, `anomaly-detection-service`, and `incident-management-service`.
+- **Grafana**: Provides a visual dashboard for monitoring service health and metrics. Configuration is located in `infrastructure/monitoring/`.
+
+## ⚙️ CI/CD
+
+A robust Continuous Integration and Deployment pipeline is implemented using **GitHub Actions** (`.github/workflows/ci.yml`). The pipeline ensures:
+- Automated dependency installation for all services.
+- Code quality checks via `flake8` linting.
+- Automated test execution.
+- Docker image builds for the frontend and microservices.
+
+## 🛳️ Kubernetes Deployment
+
+SentinelOps is built for cloud-native orchestration. Kubernetes manifests are provided in `infrastructure/kubernetes/` for key services:
+- `log-ingestion-service`
+- `metrics-collector-service`
+- `anomaly-detection-service`
+- `incident-management-service`
+
+Each service is defined with a `deployment.yaml` for self-healing scaling and a `service.yaml` for cluster-internal discovery.
+
 ## 🔮 Future Roadmap
 - [ ] **Machine Learning Anomaly Detection**: Integration of Isolation Forests and XGBoost for predictive monitoring.
 - [ ] **Prometheus + Grafana**: Native observability stack integration for deep metric exploration.

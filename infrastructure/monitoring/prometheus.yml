@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'log-ingestion-service'
+    static_configs:
+      - targets: ['log-ingestion-service:8001']
+
+  - job_name: 'metrics-collector-service'
+    static_configs:
+      - targets: ['metrics-collector-service:8002']
+
+  - job_name: 'anomaly-detection-service'
+    static_configs:
+      - targets: ['anomaly-detection-service:8003']
+
+  - job_name: 'incident-management-service'
+    static_configs:
+      - targets: ['incident-management-service:8004']

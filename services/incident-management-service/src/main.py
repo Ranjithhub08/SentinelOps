@@ -2,6 +2,7 @@ import os
 import logging
 from typing import Dict, List
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 from .schemas import IncidentEvent
@@ -23,6 +24,15 @@ app = FastAPI(
     title="Incident Management Service",
     description="SentinelOps core incident routing and management service.",
     version="1.0.0"
+)
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For demo purposes, allow all. Could be ["http://localhost:3000", "http://localhost:3002"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # In-Memory Store

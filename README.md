@@ -27,19 +27,19 @@
 **SentinelOps** is a state-of-the-art AIOps platform designed to automate the entire SRE lifecycle. It acts as an intelligent layer above your infrastructure, ingesting raw logs and metrics to pinpoint anomalies before they become outages. By utilizing Large Language Models (LLMs), SentinelOps doesn't just tell you *that* something is wrong—it explains *why* and tells you how to fix it.
 
 ## ✨ Key Features
-- **Log Ingestion Pipeline**: Scalable ingestion and standardization of structured and unstructured logs.
-- **Metrics Monitoring**: Real-time tracking of system-level performance indicators (CPU, RAM, Latency).
-- **AI Anomaly Detection**: Heuristic and statistical processors that flag threshold breaches in real-time.
-- **Root Cause Analysis (RCA)**: Automated inference engine that identifies the underlying culprit of system instability.
-- **LLM-Based Explanations**: Converts complex technical data into human-readable mitigation strategies using LLMs.
-- **Slack / Email Alerting**: Multi-channel dispatch to ensure immediate responder awareness.
-- **Observability Dashboard**: Premium Next.js frontend featuring glassmorphism and real-time visualization.
+* Log ingestion pipeline
+* Metrics monitoring
+* AI anomaly detection
+* Root cause analysis
+* LLM-generated explanations
+* Slack / Email alerting
+* Observability dashboard
 
 ## 🏗️ System Architecture
 SentinelOps operates on a highly scalable, event-driven backbone utilizing **Apache Kafka** for asynchronous microservice orchestration.
 
 ### Visual Overview
-![System Architecture](assets/architecture.png)
+![System Architecture](docs/architecture.png)
 
 ### Data Flow Diagram
 ```mermaid
@@ -79,12 +79,12 @@ graph TD
 ## 📂 Project Structure
 Each layer of SentinelOps is decoupled for maximum maintainability:
 
-- **`services/`**: The core backend microservices (Python/FastAPI) handling ingestion, detection, and AI logic.
-- **`frontend/`**: The premium Next.js incident dashboard with real-time health visualization.
-- **`infrastructure/`**: Production-grade configurations for Docker, Kubernetes (planned), and Terraform (planned).
-- **`configs/`**: Shared global constants, schema definitions, and environment templates.
-- **`ai-models/`**: AI/ML components including heuristic processors and LLM prompt engineering logic.
-- **`docs/`**: Deep-dive technical documentation on system architecture and event flow.
+- **`services/`** → backend microservices
+- **`frontend/`** → Next.js dashboard
+- **`infrastructure/`** → Docker / Kubernetes / Terraform configs
+- **`configs/`** → shared configuration
+- **`ai-models/`** → AI components
+- **`docs/`** → architecture documentation
 
 ## 🧪 Tech Stack
 - **Backend**: Python, FastAPI, Pydantic, Uvicorn
@@ -138,11 +138,11 @@ SentinelOps is built for cloud-native orchestration. Kubernetes manifests are pr
 Each service is defined with a `deployment.yaml` for self-healing scaling and a `service.yaml` for cluster-internal discovery.
 
 ## 🔮 Future Roadmap
-- [ ] **Machine Learning Anomaly Detection**: Integration of Isolation Forests and XGBoost for predictive monitoring.
-- [ ] **Prometheus + Grafana**: Native observability stack integration for deep metric exploration.
-- [ ] **Kubernetes Deployment**: Production-ready Helm charts and operator-based management.
-- [ ] **Distributed Tracing**: Full OpenTelemetry integration across the event pipeline.
-- [ ] **GitHub Actions CI/CD**: Automated testing and deployment pipelines for every microservice.
+- Prometheus monitoring
+- Grafana dashboards
+- Kubernetes deployment
+- Distributed tracing
+- CI/CD pipeline with GitHub Actions
 
 ---
 <p align="center">

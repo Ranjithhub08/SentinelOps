@@ -26,6 +26,17 @@
 ## 🚀 Overview
 **SentinelOps** is a state-of-the-art AIOps platform designed to automate the entire SRE lifecycle. It acts as an intelligent layer above your infrastructure, ingesting raw logs and metrics to pinpoint anomalies before they become outages. By utilizing Large Language Models (LLMs), SentinelOps doesn't just tell you *that* something is wrong—it explains *why* and tells you how to fix it.
 
+## 📄 Resume Description
+SentinelOps is a distributed microservices platform designed for automated incident detection and response. It leverages an event-driven Kafka pipeline to ingest logs and metrics in real time, apply AI-assisted root cause analysis, and serve intelligent alerts via a Next.js observability dashboard.
+
+## 🧠 Engineering Concepts Demonstrated
+This project serves as a comprehensive portfolio piece demonstrating:
+- Microservices Architecture
+- Event-Driven Systems
+- Distributed System Design
+- Observability & Incident Management
+- AI-assisted Root Cause Analysis
+
 ## ✨ Key Features
 * Log ingestion pipeline
 * Metrics monitoring

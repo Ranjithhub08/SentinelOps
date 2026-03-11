@@ -10,10 +10,11 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-14-black?logo=next.js&style=for-the-badge" alt="Next.js">
-  <img src="https://img.shields.io/badge/FastAPI-0.100.0-009688?logo=fastapi&style=for-the-badge" alt="FastAPI">
-  <img src="https://img.shields.io/badge/Kafka-3.5.0-black?logo=apache-kafka&style=for-the-badge" alt="Kafka">
-  <img src="https://img.shields.io/badge/Framer_Motion-11.11-FF0055?logo=framer&style=for-the-badge" alt="Framer Motion">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-005850?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Apache_Kafka-231F20?style=for-the-badge&logo=apache-kafka&logoColor=white" alt="Kafka">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js">
 </p>
 
 <p align="center">
@@ -37,6 +38,10 @@
 ## 🏗️ System Architecture
 SentinelOps operates on a highly scalable, event-driven backbone utilizing **Apache Kafka** for asynchronous microservice orchestration.
 
+### Visual Overview
+![System Architecture](assets/architecture.png)
+
+### Data Flow Diagram
 ```mermaid
 graph TD
     %% Source
@@ -71,34 +76,21 @@ graph TD
     IM -.-> DASH(Next.js Frontend)
 ```
 
-## 🛠️ Microservices
-SentinelOps is composed of 7 independent microservices:
-*   `log-ingestion-service`: Standardizes and publishes log telemetry.
-*   `metrics-collector-service`: Collects and standardizes performance metrics.
-*   `anomaly-detection-service`: Processes raw telemetry to flag threshold violations.
-*   `incident-management-service`: Aggregates anomalies into trackable system incidents.
-*   `root-cause-analysis-service`: Applies AI logic to identify failure origins.
-*   `llm-explanation-service`: Generates human-readable remediation context.
-*   `alert-service`: Dispatches notifications to external integrations.
+## 📂 Project Structure
+Each layer of SentinelOps is decoupled for maximum maintainability:
+
+- **`services/`**: The core backend microservices (Python/FastAPI) handling ingestion, detection, and AI logic.
+- **`frontend/`**: The premium Next.js incident dashboard with real-time health visualization.
+- **`infrastructure/`**: Production-grade configurations for Docker, Kubernetes (planned), and Terraform (planned).
+- **`configs/`**: Shared global constants, schema definitions, and environment templates.
+- **`ai-models/`**: AI/ML components including heuristic processors and LLM prompt engineering logic.
+- **`docs/`**: Deep-dive technical documentation on system architecture and event flow.
 
 ## 🧪 Tech Stack
-| Category | Technologies |
-| :--- | :--- |
-| **Backend** | Python, FastAPI, Pydantic, Uvicorn |
-| **Messaging** | Apache Kafka, Zookeeper |
-| **Frontend** | Next.js 14, React, Framer Motion, Tailwind CSS |
-| **Infrastructure** | Docker, Kubernetes (Planned), Terraform (Planned) |
-
-## 📂 Project Structure
-```text
-/
-├── services/               # Backend microservices logic (Python/FastAPI)
-├── frontend/               # Premium Next.js dashboard
-├── infrastructure/         # Docker, Kubernetes, and Terraform configs
-├── configs/                # Shared global constants and configurations
-├── ai-models/              # AI/ML logic and model components
-└── docs/                   # Extended system documentation
-```
+- **Backend**: Python, FastAPI, Pydantic, Uvicorn
+- **Messaging**: Apache Kafka, Zookeeper
+- **Frontend**: Next.js 14, React, Framer Motion, Tailwind CSS
+- **Infrastructure**: Docker, Docker Compose
 
 ## ⚡ Running Locally
 
@@ -121,12 +113,12 @@ npm install
 npm run dev
 ```
 
-## 🔮 Future Improvements
-- [ ] **Machine Learning RCA**: Moving from heuristics to Isolation Forests and XGBoost.
-- [ ] **Observability Stack**: Native integration with Prometheus and Grafana.
-- [ ] **Cloud Native**: Full Kubernetes Helm charts and Terraform provisioning scripts.
-- [ ] **Tracing**: Distributed tracing integration with OpenTelemetry.
-- [ ] **CI/CD**: Automated deployment pipelines for each microservice.
+## 🔮 Future Roadmap
+- [ ] **Machine Learning Anomaly Detection**: Integration of Isolation Forests and XGBoost for predictive monitoring.
+- [ ] **Prometheus + Grafana**: Native observability stack integration for deep metric exploration.
+- [ ] **Kubernetes Deployment**: Production-ready Helm charts and operator-based management.
+- [ ] **Distributed Tracing**: Full OpenTelemetry integration across the event pipeline.
+- [ ] **GitHub Actions CI/CD**: Automated testing and deployment pipelines for every microservice.
 
 ---
 <p align="center">

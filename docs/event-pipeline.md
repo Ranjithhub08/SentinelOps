@@ -20,12 +20,24 @@ These topics drive the promotion of raw data into intelligence.
 | `incidents.analyzed` | `root-cause-analysis-service` | `llm-explanation-service` | Root Cause ID'd |
 | `incidents.explained` | `llm-explanation-service` | `alert-service` | Narrated Incident |
 
-## Event Flow Lifecycle
+## 📡 Kafka Topic Definitions
 
-1. **Generation**: External apps send logs/metrics to Ingestion APIs.
-2. **Buffering**: Data is buffered in `logs.raw` or `metrics.raw`.
-3. **Detection**: The Anomaly Detection service flags heuristic breaches.
-4. **Promotion**: Incident Management grouping anomalies into an `Incident`.
-5. **Inference**: RCA service identifies the failure origin.
-6. **Narration**: LLM service writes the incident explanation.
-7. **Notification**: Alert service dispatches the final payload to Slack/Email.
+| Topic Name | Purpose | Data Schema |
+| :--- | :--- | :--- |
+| `logs.raw` | Raw ingested log streams | `LogEntry` |
+| `metrics.raw` | Raw system performance metrics | `MetricEntry` |
+| `anomalies.detected` | Flagged points of interest | `AnomalyEvent` |
+| `incidents.created` | Aggregated anomaly incidents | `Incident` |
+| `incidents.analyzed` | Incidents with identified root causes | `AnalyzedIncident` |
+| `incidents.explained` | Incidents with LLM-generated summaries | `ExplainedIncident` |
+| `alerts.triggered` | Final notifications for dispatch | `Alert` |
+
+## 🎡 Event Lifecycle
+
+1. **Capture**: `log-ingestion` or `metrics-collector` receives external data.
+2. **Buffer**: Data is normalized and pushed to `*.raw` Kafka topics.
+3. **Analyze**: `anomaly-detection` processes streams and flags issues in `anomalies.detected`.
+4. **Escalate**: `incident-management` groups anomalies into a single `Incident`.
+5. **Diagnose**: `root-cause-analysis` determines the "Why" and posts to `incidents.analyzed`.
+6. **Interpret**: `llm-explanation` uses AI to write a natural language report.
+7. **Notify**: `alert-service` sends the final intelligence to Slack or Email.

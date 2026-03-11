@@ -24,6 +24,22 @@ Triggered by detected anomalies. It performs two critical functions:
 ### 4. Alerting & Visualization Layer
 The interface for SRE teams. It handles external notifications and live dashboard updates through Next.js.
 
+## 🔄 Event Pipeline Flow
+
+SentinelOps uses a strictly-defined event pipeline. Each service communicates only through Kafka, ensuring loose coupling and high resilience.
+
+### Pipeline Stage & Kafka Topics
+
+| Stage | Producer Service | Kafka Topic | Consumer Service |
+| :--- | :--- | :--- | :--- |
+| **Ingestion** | `log-ingestion` | `logs.raw` | `anomaly-detection` |
+| **Ingestion** | `metrics-collector` | `metrics.raw` | `anomaly-detection` |
+| **Detection** | `anomaly-detection` | `anomalies.detected` | `incident-management` |
+| **Management** | `incident-management` | `incidents.created` | `root-cause-analysis` |
+| **Analysis** | `root-cause-analysis` | `incidents.analyzed` | `llm-explanation` |
+| **Intelligence** | `llm-explanation` | `incidents.explained` | `alert-service` |
+| **Alerting** | `alert-service` | `alerts.triggered` | (External: Slack/Email) |
+
 ## Communication Pattern
 All inter-service communication is **asynchronous** via Kafka. This ensures that a failure in the Intelligence layer (e.g., an LLM timeout) does not block the ingestion of new telemetry or the detection of other anomalies.
 

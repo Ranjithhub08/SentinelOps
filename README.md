@@ -1,22 +1,45 @@
-# SentinelOps
+<p align="center">
+  <img src="assets/logo.png" width="250" alt="SentinelOps Logo">
+</p>
 
-**AI-Powered Intelligent Incident Response Platform**
+<h1 align="center">SentinelOps</h1>
 
-## Overview
-SentinelOps is a modern, distributed Incident Intelligence Platform that completely re-imagines how site reliability engineers scale their operations. It automatically ingests raw logs and metrics, detects anomalies using real-time heuristics, infers system root causes, generates human-readable incident explanations via Large Language Models (LLMs), and routes targeted alerts to responders.
+<p align="center">
+  <strong>The AI-Powered Intelligent Incident Response Platform</strong><br>
+  <em>Reimagining site reliability through real-time anomaly detection and LLM-driven diagnostics.</em>
+</p>
 
-## Key Features
-- **Real-Time Telemetry Ingestion**: Scalable ingestion of structured logs and application metrics.
-- **Automated Anomaly Detection**: Edge heuristics and anomaly processors dynamically flag threshold breaches.
-- **Incident Lifecycle Management**: Stateful aggregation of anomalies into trackable incidents.
-- **AI-Driven Root Cause Analysis (RCA)**: Automated inference engines identifying the underlying culprits of instability.
-- **Natural Language Explanations**: LLM-powered context generation converting technical data into human-readable mitigation strategies.
-- **Multi-Channel Alerting**: Direct dispatch to Slack, Email, and internal audit logs.
-- **Observability Dashboard**: Next.js and TailwindCSS-powered frontend featuring glassmorphism aesthetics and live views of system health.
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14-black?logo=next.js&style=for-the-badge" alt="Next.js">
+  <img src="https://img.shields.io/badge/FastAPI-0.100.0-009688?logo=fastapi&style=for-the-badge" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Kafka-3.5.0-black?logo=apache-kafka&style=for-the-badge" alt="Kafka">
+  <img src="https://img.shields.io/badge/Framer_Motion-11.11-FF0055?logo=framer&style=for-the-badge" alt="Framer Motion">
+</p>
 
-## System Architecture
+<p align="center">
+  <a href="https://sentinel-ops-psi.vercel.app"><strong>View Live Demo →</strong></a>
+</p>
 
-SentinelOps relies on an event-driven microservices architecture communicating asynchronously over Apache Kafka.
+---
+
+## 🚀 Overview
+**SentinelOps** is a state-of-the-art incident intelligence engine designed to automate the entire SRE lifecycle. By bridging the gap between raw system telemetry and human-readable insights, SentinelOps ensures that your team spends less time debugging and more time building.
+
+### ✨ The "Fire" UI Experience
+We've overhauled the dashboard with a premium, command-center aesthetic:
+- **Advanced Glassmorphism**: Translucent panels with refined backdrop blurs.
+- **Dynamic Animations**: Coordinated page transitions and staggered row entries via `framer-motion`.
+- **Intelligent Hub**: A sidebar-driven layout providing instant access to AI-generated root cause analysis.
+
+![SentinelOps Dashboard Overview](assets/dashboard_overview.png)
+
+## 📡 Live Intelligence Hub
+Observe real-time system behavior and AI diagnostics in action. When a threshold is breached, the **Incident Intel** panel provides deep technical context and remediation strategies automatically.
+
+![SentinelOps Incident Intelligence](assets/dashboard_intel.png)
+
+## 🏗️ System Architecture
+SentinelOps operates on a highly scalable, event-driven backbone utilizing **Apache Kafka** for asynchronous microservice orchestration.
 
 ```mermaid
 graph TD
@@ -52,56 +75,47 @@ graph TD
     IM -.->|REST API| DASH[incident-dashboard Frontend]
 ```
 
-## Microservices
-Each component is designed with a single responsibility, enabling independent scaling and isolated failure domains:
-* `log-ingestion-service`: Standardizes log telemetry.
-* `metrics-collector-service`: Collects performance metrics.
-* `anomaly-detection-service`: Subscribes to telemetry topics and flags heuristic violations.
-* `incident-management-service`: Promotes raw anomalies to actionable incidents via REST APIs.
-* `root-cause-analysis-service`: Applies rule-based AI reasoning to detect root causes.
-* `llm-explanation-service`: Generates plain-text remediation strategies.
-* `alert-service`: Handles notification dispatch.
+## 🛠️ Tech Stack
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | Next.js 14, React, Framer Motion, Tailwind CSS, Lucide |
+| **Backend** | Python 3.9+, FastAPI, Pydantic, Uvicorn |
+| **Messaging** | Apache Kafka, Zookeeper |
+| **Infrastructure** | Docker, Docker Compose, Terraform (Upcoming) |
+| **AI/ML** | Rule-based RCA, LLM Integration (DeepMind/Gemini) |
 
-## Tech Stack
-* **Backend**: Python 3.9+, FastAPI, Pydantic, Uvicorn
-* **Event Broker**: Apache Kafka (kafka-python), Zookeeper
-* **Frontend**: Next.js 14, React, TailwindCSS, Lucide Icons
-* **Infrastructure**: Docker, Docker Compose
+## ⚡ Quick Start
 
-## Project Structure
+### 1. Prerequisites
+- Docker & Docker Compose
+- Node.js 18+
+- Python 3.9+
 
-```text
-/
-├── services/               # Backend microservices logic
-├── frontend/               # Next.js incident dashboard
-├── infrastructure/         # Docker, Kubernetes, Terraform configs
-├── configs/                # Shared global configuration states
-├── ai-models/              # AI components and ML/LLM model weights
-└── docs/                   # Architecture and technical documentation
+### 2. Launch Local Environment
+We provide an automated script to boot the entire ecosystem:
+```bash
+# Start Kafka, Zookeeper, and all 7 microservices
+chmod +x start_test_env.sh
+./start_test_env.sh
 ```
 
-## Running Locally
+### 3. Open the Dashboard
+Once the services are active, the dashboard will be available at:
+- **Local**: `http://localhost:3000`
+- **Demo**: [https://sentinel-ops-psi.vercel.app](https://sentinel-ops-psi.vercel.app)
 
-1. **Start the Event Backbone**:
-   Navigate to the docker directory and spin up Kafka/Zookeeper.
-   ```bash
-   cd infrastructure/docker
-   docker-compose up -d
-   ```
+## 📂 Project Structure
+```text
+/
+├── services/               # 7 Backend microservices (Python/FastAPI)
+├── frontend/               # Premium Next.js incident dashboard
+├── infrastructure/         # Docker-Compose and Cloud manifests
+├── configs/                # Shared global states and environment templates
+├── ai-models/              # ML components and logic
+└── assets/                 # Brand identity and media
+```
 
-2. **Boot the Backend Services**:
-   Follow the `README.md` within each `services/*` directory to initialize virtual environments, install `requirements.txt`, and run the FastAPI uvicorn server.
-
-3. **Launch the Dashboard**:
-   Navigate to the frontend directory to start the UI.
-   ```bash
-   cd frontend/incident-dashboard
-   npm install
-   npm run dev
-   ```
-
-## Future Improvements
-- Migration from heuristic RCA to an embedded ML model (XGBoost/Isolation Forests).
-- Integration with live OpenAI/Anthropic APIs for the `llm-explanation-service`.
-- Expansion of the Kubernetes manifest structure for cloud-native deployment.
-- Implementation of a persistent database layer (PostgreSQL) in place of the incident in-memory store.
+---
+<p align="center">
+  Built with ❤️ for SREs by <a href="https://github.com/Ranjithhub08">Ranjithhub08</a>
+</p>

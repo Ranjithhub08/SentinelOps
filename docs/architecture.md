@@ -1,18 +1,32 @@
-# System Architecture Overview
+# System Architecture
 
-**SentinelOps** implements an advanced architectural design tailored for high-volume telemetry ingestion and sophisticated incident resolution.
+SentinelOps follows a cloud-native, event-driven microservices architecture designed for high availability, horizontal scalability, and isolated failure domains.
 
-## Core Principles
+## Overview
 
-1. **Decoupled Microservices**: Every component (ingestion, anomaly detection, incident structuring, insight generation, and alerting) functions autonomously. Failure cascades are prevented by strict separation of concerns.
-2. **Event-Driven Asynchrony**: Synchronous HTTP requests are minimized. All state transfer occurs via an underlying messaging backbone (Apache Kafka), ensuring resilience against throughput spikes.
-3. **Pipelined Analysis**: Data matures as it traverses the pipeline—from raw metrics (Level 1) to heuristic anomalies (Level 2), to structural incidents (Level 3), up to human-readable intelligence (Level 4).
+The platform is designed to process massive streams of telemetry data (logs and metrics) and promotion them into actionable intelligence. This is achieved by decoupling data ingestion, analysis, and alerting using **Apache Kafka** as the central event bus.
 
-## Infrastructure Ecosystem
+## Architectural Layers
 
-- **Backend Logic**: Python 3.9+ relying heavily on FastAPI for rapid REST interfaces and `kafka-python` for streaming interactions.
-- **Frontend Dashboard**: Next.js App Router providing a persistent, responsive, glassmorphic UI representing live system health.
-- **Streaming Backbone**: Apache Kafka clusters backed by Zookeeper for fault-tolerant log durability.
+### 1. Ingestion Layer
+The frontline of the platform. It handles raw data ingestion from external applications via REST APIs.
+- **Log Ingestion**: Processes and schemas logs.
+- **Metrics Collector**: Periodically aggregates system performance data.
 
-## Operational Flow
-The system operates by receiving logs and metrics from external applications via POST requests. Once ingested and standardized onto Kafka, these payloads are simultaneously processed by edge detection algorithms. Unhealthy signatures trigger incidents into a localized state store. Finally, these incidents are enriched with inferred root causes and shipped via external channels (Slack/Email) to Site Reliability Teams.
+### 2. Detection Layer
+Subscribes to raw telemetry topics and applies heuristic models to identify threshold breaches or pattern anomalies. This layer is strictly for identification, not diagnosis.
+
+### 3. Intelligence Layer (The Brain)
+Triggered by detected anomalies. It performs two critical functions:
+- **Rule-based Inference**: Pinpoints the root cause by correlating anomalies across different services.
+- **Generative Diagnostics**: Uses LLMs to generate a human-readable narrative of the incident, including a "How-to-Fix" guide.
+
+### 4. Alerting & Visualization Layer
+The interface for SRE teams. It handles external notifications and live dashboard updates through Next.js.
+
+## Communication Pattern
+All inter-service communication is **asynchronous** via Kafka. This ensures that a failure in the Intelligence layer (e.g., an LLM timeout) does not block the ingestion of new telemetry or the detection of other anomalies.
+
+---
+> [!NOTE]
+> For a detailed breakdown of each service, see [Services Documentation](services.md).

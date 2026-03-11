@@ -1,41 +1,31 @@
-# Event Pipeline
+# Event Pipeline & Kafka Topics
 
-SentinelOps treats data as a continual stream. This document outlines the progression of an event across the Kafka topics from raw initiation to final resolution alerting.
+SentinelOps relies on a central event backbone powered by **Apache Kafka**. This document details the topics used and the flow of events through the system.
 
-## Event Stages
+## Ingestion Topics
+These topics contain raw, unprocessed data from producers.
 
-### Stage 1: Raw Telemetry
-- **Topic**: `logs.raw` / `metrics.raw`
-- **Producer**: `log-ingestion-service` / `metrics-collector-service`
-- **Consumer**: `anomaly-detection-service`
-- **Data Shape**: Base primitives (latency numbers, CPU percentages, text log dumps).
+| Topic Name | Producer Service | Consumer Service | Payload Type |
+| :--- | :--- | :--- | :--- |
+| `logs.raw` | `log-ingestion-service` | `anomaly-detection-service` | JSON Log Struct |
+| `metrics.raw` | `metrics-collector-service` | `anomaly-detection-service` | JSON Metric Struct |
 
-### Stage 2: Anomaly Detection
-- **Topic**: `anomalies.detected`
-- **Producer**: `anomaly-detection-service`
-- **Consumer**: `incident-management-service`
-- **Data Shape**: A flagged property type (e.g., `HIGH_CPU`) and the numeric/textual trigger value.
+## Analysis & Logic Topics
+These topics drive the promotion of raw data into intelligence.
 
-### Stage 3: Incident Creation
-- **Topic**: `incidents.created`
-- **Producer**: `incident-management-service`
-- **Consumer**: `root-cause-analysis-service`
-- **Data Shape**: A categorized event object with a unique UUID, designated severity mapping, and active system status (`OPEN`).
+| Topic Name | Producer Service | Consumer Service | Stage |
+| :--- | :--- | :--- | :--- |
+| `anomalies.detected` | `anomaly-detection-service` | `incident-management-service` | Detected Anomaly |
+| `incidents.created` | `incident-management-service` | `root-cause-analysis-service` | New Incident |
+| `incidents.analyzed` | `root-cause-analysis-service` | `llm-explanation-service` | Root Cause ID'd |
+| `incidents.explained` | `llm-explanation-service` | `alert-service` | Narrated Incident |
 
-### Stage 4: Root Cause Enrichment
-- **Topic**: `incidents.analyzed`
-- **Producer**: `root-cause-analysis-service`
-- **Consumer**: `llm-explanation-service`
-- **Data Shape**: The Incident object appended with a specific system diagnosis (`root_cause`) and a probabilistic confidence score.
+## Event Flow Lifecycle
 
-### Stage 5: Explanation & Alerting
-- **Topic**: `incidents.explained`
-- **Producer**: `llm-explanation-service`
-- **Consumer**: `alert-service`
-- **Data Shape**: Final human-readable outputs (`explanation`, `suggested_action`).
-
-### Stage 6: Audit & Post-Mortem
-- **Topic**: `alerts.triggered`
-- **Producer**: `alert-service`
-- **Consumer**: (Future Logging / Archival Systems)
-- **Data Shape**: Delivery confirmation channels and timestamps.
+1. **Generation**: External apps send logs/metrics to Ingestion APIs.
+2. **Buffering**: Data is buffered in `logs.raw` or `metrics.raw`.
+3. **Detection**: The Anomaly Detection service flags heuristic breaches.
+4. **Promotion**: Incident Management grouping anomalies into an `Incident`.
+5. **Inference**: RCA service identifies the failure origin.
+6. **Narration**: LLM service writes the incident explanation.
+7. **Notification**: Alert service dispatches the final payload to Slack/Email.

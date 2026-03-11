@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" width="250" alt="SentinelOps Logo">
+  <img src="assets/logo.png" width="300" alt="SentinelOps Logo">
 </p>
 
 <h1 align="center">SentinelOps</h1>
@@ -23,99 +23,112 @@
 ---
 
 ## 🚀 Overview
-**SentinelOps** is a state-of-the-art incident intelligence engine designed to automate the entire SRE lifecycle. By bridging the gap between raw system telemetry and human-readable insights, SentinelOps ensures that your team spends less time debugging and more time building.
+**SentinelOps** is a state-of-the-art AIOps platform designed to automate the entire SRE lifecycle. It acts as an intelligent layer above your infrastructure, ingesting raw logs and metrics to pinpoint anomalies before they become outages. By utilizing Large Language Models (LLMs), SentinelOps doesn't just tell you *that* something is wrong—it explains *why* and tells you how to fix it.
 
-### ✨ The "Fire" UI Experience
-We've overhauled the dashboard with a premium, command-center aesthetic:
-- **Advanced Glassmorphism**: Translucent panels with refined backdrop blurs.
-- **Dynamic Animations**: Coordinated page transitions and staggered row entries via `framer-motion`.
-- **Intelligent Hub**: A sidebar-driven layout providing instant access to AI-generated root cause analysis.
-
-![SentinelOps Dashboard Overview](assets/dashboard_overview.png)
-
-## 📡 Live Intelligence Hub
-Observe real-time system behavior and AI diagnostics in action. When a threshold is breached, the **Incident Intel** panel provides deep technical context and remediation strategies automatically.
-
-![SentinelOps Incident Intelligence](assets/dashboard_intel.png)
+## ✨ Key Features
+- **Log Ingestion Pipeline**: Scalable ingestion and standardization of structured and unstructured logs.
+- **Metrics Monitoring**: Real-time tracking of system-level performance indicators (CPU, RAM, Latency).
+- **AI Anomaly Detection**: Heuristic and statistical processors that flag threshold breaches in real-time.
+- **Root Cause Analysis (RCA)**: Automated inference engine that identifies the underlying culprit of system instability.
+- **LLM-Based Explanations**: Converts complex technical data into human-readable mitigation strategies using LLMs.
+- **Slack / Email Alerting**: Multi-channel dispatch to ensure immediate responder awareness.
+- **Observability Dashboard**: Premium Next.js frontend featuring glassmorphism and real-time visualization.
 
 ## 🏗️ System Architecture
 SentinelOps operates on a highly scalable, event-driven backbone utilizing **Apache Kafka** for asynchronous microservice orchestration.
 
 ```mermaid
 graph TD
-    %% Inputs
-    L[Application Logs] -->|POST /logs| LI[log-ingestion-service]
-    M[Application Metrics] -->|POST /metrics| MC[metrics-collector-service]
+    %% Source
+    L[Logs] --> LI(Log Ingestion)
+    M[Metrics] --> MC(Metrics Collector)
 
-    %% Ingestion Topics
-    LI -->|publishes| TL(Kafka: logs.raw)
-    MC -->|publishes| TM(Kafka: metrics.raw)
+    %% Ingestion
+    LI --> KLR(Kafka: logs.raw)
+    MC --> KMR(Kafka: metrics.raw)
 
     %% Detection
-    TL --> AD[anomaly-detection-service]
-    TM --> AD
-    AD -->|publishes| TA(Kafka: anomalies.detected)
+    KLR --> AD(Anomaly Detection)
+    KMR --> AD
+    AD --> KAD(Kafka: anomalies.detected)
 
-    %% Incident Management
-    TA --> IM[incident-management-service]
-    IM -->|publishes| TIC(Kafka: incidents.created)
+    %% Management
+    KAD --> IM(Incident Management)
+    IM --> KIC(Kafka: incidents.created)
+
+    %% Intelligence
+    KIC --> RCA(Root Cause Analysis)
+    RCA --> KIA(Kafka: incidents.analyzed)
     
-    %% AI Pipeline
-    TIC --> RCA[root-cause-analysis-service]
-    RCA -->|publishes| TIA(Kafka: incidents.analyzed)
-    
-    TIA --> LLM[llm-explanation-service]
-    LLM -->|publishes| TIE(Kafka: incidents.explained)
+    KIA --> LLM(LLM Explanation)
+    LLM --> KIE(Kafka: incidents.explained)
 
     %% Output
-    TIE --> AS[alert-service]
-    AS -->|Webhook/SMTP| OUT(Slack / Email / Users)
+    KIE --> AS(Alert Service)
+    AS --> SL(Slack / Email)
     
-    %% UI
-    IM -.->|REST API| DASH[incident-dashboard Frontend]
+    %% Dashboard
+    IM -.-> DASH(Next.js Frontend)
 ```
 
-## 🛠️ Tech Stack
-| Layer | Technologies |
+## 🛠️ Microservices
+SentinelOps is composed of 7 independent microservices:
+*   `log-ingestion-service`: Standardizes and publishes log telemetry.
+*   `metrics-collector-service`: Collects and standardizes performance metrics.
+*   `anomaly-detection-service`: Processes raw telemetry to flag threshold violations.
+*   `incident-management-service`: Aggregates anomalies into trackable system incidents.
+*   `root-cause-analysis-service`: Applies AI logic to identify failure origins.
+*   `llm-explanation-service`: Generates human-readable remediation context.
+*   `alert-service`: Dispatches notifications to external integrations.
+
+## 🧪 Tech Stack
+| Category | Technologies |
 | :--- | :--- |
-| **Frontend** | Next.js 14, React, Framer Motion, Tailwind CSS, Lucide |
-| **Backend** | Python 3.9+, FastAPI, Pydantic, Uvicorn |
+| **Backend** | Python, FastAPI, Pydantic, Uvicorn |
 | **Messaging** | Apache Kafka, Zookeeper |
-| **Infrastructure** | Docker, Docker Compose, Terraform (Upcoming) |
-| **AI/ML** | Rule-based RCA, LLM Integration (DeepMind/Gemini) |
-
-## ⚡ Quick Start
-
-### 1. Prerequisites
-- Docker & Docker Compose
-- Node.js 18+
-- Python 3.9+
-
-### 2. Launch Local Environment
-We provide an automated script to boot the entire ecosystem:
-```bash
-# Start Kafka, Zookeeper, and all 7 microservices
-chmod +x start_test_env.sh
-./start_test_env.sh
-```
-
-### 3. Open the Dashboard
-Once the services are active, the dashboard will be available at:
-- **Local**: `http://localhost:3000`
-- **Demo**: [https://sentinel-ops-psi.vercel.app](https://sentinel-ops-psi.vercel.app)
+| **Frontend** | Next.js 14, React, Framer Motion, Tailwind CSS |
+| **Infrastructure** | Docker, Kubernetes (Planned), Terraform (Planned) |
 
 ## 📂 Project Structure
 ```text
 /
-├── services/               # 7 Backend microservices (Python/FastAPI)
-├── frontend/               # Premium Next.js incident dashboard
-├── infrastructure/         # Docker-Compose and Cloud manifests
-├── configs/                # Shared global states and environment templates
-├── ai-models/              # ML components and logic
-└── assets/                 # Brand identity and media
+├── services/               # Backend microservices logic (Python/FastAPI)
+├── frontend/               # Premium Next.js dashboard
+├── infrastructure/         # Docker, Kubernetes, and Terraform configs
+├── configs/                # Shared global constants and configurations
+├── ai-models/              # AI/ML logic and model components
+└── docs/                   # Extended system documentation
 ```
+
+## ⚡ Running Locally
+
+### 1. Start Support Infrastructure
+```bash
+cd infrastructure/docker
+docker-compose up -d
+```
+
+### 2. Boot Microservices
+Navigate to `services/<service-name>`, create a virtual environment, install requirements, and run:
+```bash
+uvicorn src.main:app --port 800X --reload
+```
+
+### 3. Launch Dashboard
+```bash
+cd frontend/incident-dashboard
+npm install
+npm run dev
+```
+
+## 🔮 Future Improvements
+- [ ] **Machine Learning RCA**: Moving from heuristics to Isolation Forests and XGBoost.
+- [ ] **Observability Stack**: Native integration with Prometheus and Grafana.
+- [ ] **Cloud Native**: Full Kubernetes Helm charts and Terraform provisioning scripts.
+- [ ] **Tracing**: Distributed tracing integration with OpenTelemetry.
+- [ ] **CI/CD**: Automated deployment pipelines for each microservice.
 
 ---
 <p align="center">
-  Built with ❤️ for SREs by <a href="https://github.com/Ranjithhub08">Ranjithhub08</a>
+  Built with ❤️ by <a href="https://github.com/Ranjithhub08">Ranjithhub08</a>
 </p>

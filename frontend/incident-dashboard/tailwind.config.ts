@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ["var(--font-inter)"],
+        outfit: ["var(--font-outfit)"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

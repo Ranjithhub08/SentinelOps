@@ -21,7 +21,7 @@ function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-interface Incident {
+export interface Incident {
     id: string;
     title: string;
     severity: 'critical' | 'high' | 'medium' | 'low';
@@ -37,7 +37,7 @@ const mockIncidents: Incident[] = [
     { id: 'INC-2024-004', title: 'Potential SQL injection pattern', severity: 'critical', status: 'active', timestamp: '2024-03-13T07:15:00Z', source: 'waf-edge-02' },
 ];
 
-export default function IncidentTable() {
+export default function IncidentTable({ incidents = mockIncidents }: { incidents?: any[] }) {
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
     const getSeverityStyles = (severity: string) => {
@@ -87,7 +87,16 @@ export default function IncidentTable() {
                     </thead>
                     <tbody>
                         <AnimatePresence initial={false}>
-                            {mockIncidents.map((incident, index) => (
+                            {incidents.slice(0, 20).map((rawIncident, index) => {
+                                const incident = {
+                                    id: rawIncident.incident_id || rawIncident.id,
+                                    title: rawIncident.type || rawIncident.title,
+                                    severity: (rawIncident.severity || 'low').toLowerCase(),
+                                    status: (rawIncident.status || 'investigating').toLowerCase(),
+                                    timestamp: rawIncident.timestamp,
+                                    source: rawIncident.service || rawIncident.source,
+                                };
+                                return (
                                 <motion.tr
                                     key={incident.id}
                                     initial={{ opacity: 0, x: -20 }}
@@ -104,7 +113,10 @@ export default function IncidentTable() {
                                             <span className="text-xs font-black text-white group-hover:text-indigo-400 transition-colors">
                                                 {incident.title}
                                             </span>
-                                            <span className="text-[10px] font-bold text-slate-600 mt-0.5">
+                                            <span 
+                                                className="text-[10px] font-bold text-slate-600 mt-0.5"
+                                                suppressHydrationWarning
+                                            >
                                                 {incident.id} • {new Date(incident.timestamp).toLocaleTimeString()}
                                             </span>
                                         </div>
@@ -144,7 +156,8 @@ export default function IncidentTable() {
                                         </div>
                                     </td>
                                 </motion.tr>
-                            ))}
+                                );
+                            })}
                         </AnimatePresence>
                     </tbody>
                 </table>
@@ -152,39 +165,56 @@ export default function IncidentTable() {
 
             {/* Detailed Overlay (Holographic Panel) */}
             <AnimatePresence>
-                {selectedId && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        transition={{ type: "spring", bounce: 0.3 }}
-                        className="absolute bottom-8 right-8 w-96 glass-elite refractive-edge p-6 shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 border-indigo-500/20"
-                    >
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="p-2 bg-indigo-500/10 rounded-xl border border-indigo-400/30">
-                                <ShieldAlert className="text-indigo-400" size={18} />
+                {selectedId && (() => {
+                    const rawIncident = incidents.find(i => (i.incident_id || i.id) === selectedId);
+                    if (!rawIncident) return null;
+                    
+                    const title = rawIncident.type || rawIncident.title;
+                    const rootCause = rawIncident.root_cause || "Analyzing...";
+                    const explanation = rawIncident.explanation || "System is currently performing deep heuristic analysis on this anomaly event. Resolution patterns will appear shortly.";
+                    const action = rawIncident.suggested_action || "Awaiting AI triage...";
+
+                    return (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            transition={{ type: "spring", bounce: 0.3 }}
+                            className="absolute bottom-8 right-8 w-96 glass-elite refractive-edge p-6 shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 border-indigo-500/20"
+                        >
+                            <div className="flex items-center justify-between mb-6">
+                                <div className="p-2 bg-indigo-500/10 rounded-xl border border-indigo-400/30">
+                                    <ShieldAlert className="text-indigo-400" size={18} />
+                                </div>
+                                <div className="flex flex-col items-end">
+                                    <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">Root Cause</span>
+                                    <span className="text-[11px] font-bold text-white mt-1 uppercase tracking-tighter italic">{rootCause}</span>
+                                </div>
+                                <button 
+                                    onClick={() => setSelectedId(null)}
+                                    className="text-slate-500 hover:text-white transition-colors"
+                                >
+                                    <ChevronRight className="rotate-90 md:rotate-0" size={18} />
+                                </button>
                             </div>
-                            <button 
-                                onClick={() => setSelectedId(null)}
-                                className="text-slate-500 hover:text-white transition-colors"
-                            >
-                                <ChevronRight className="rotate-90 md:rotate-0" size={18} />
-                            </button>
-                        </div>
-                        <h4 className="text-sm font-black text-white mb-2 uppercase tracking-wide italic">Threat Intelligence</h4>
-                        <p className="text-xs text-slate-400 font-medium leading-relaxed mb-6">
-                            Detection of highly sophisticated intrusion patterns at the gateway edge. Recommendation: Initiate immediate isolation protocol.
-                        </p>
-                        <div className="space-y-3">
-                            <button className="btn-elite w-full py-3 !bg-rose-500/10 !border-rose-500/30 !text-rose-500 hover:!bg-rose-500/20 transition-all">
-                                Isolate Host
-                            </button>
-                            <button className="btn-elite w-full py-3">
-                                Deep Diagnostic
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
+                            <h4 className="text-sm font-black text-white mb-2 uppercase tracking-wide italic">{title}</h4>
+                            <p className="text-xs text-slate-400 font-medium leading-relaxed mb-6">
+                                {explanation}
+                            </p>
+                            <div className="space-y-3">
+                                <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 mb-4">
+                                    <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest block mb-1 underline decoration-indigo-500/50">Next Best Action</span>
+                                    <span className="text-[11px] font-bold text-indigo-300 italic">
+                                        {action}
+                                    </span>
+                                </div>
+                                <button className="btn-elite w-full py-3 !bg-rose-500/10 !border-rose-500/30 !text-rose-500 hover:!bg-rose-500/20 transition-all">
+                                    Initiate Countermeasures
+                                </button>
+                            </div>
+                        </motion.div>
+                    );
+                })()}
             </AnimatePresence>
         </div>
     );

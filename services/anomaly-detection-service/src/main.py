@@ -3,8 +3,8 @@ import logging
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
-from .kafka_producer import AnomalyProducer
-from .kafka_consumer import AnomalyConsumer
+from kafka_producer import AnomalyProducer
+from kafka_consumer import AnomalyConsumer
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

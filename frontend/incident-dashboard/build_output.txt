@@ -1,0 +1,53 @@
+
+> incident-dashboard@1.0.0 build
+> next build
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/ranjithkumar/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /Users/ranjithkumar/SentinelOps/frontend/incident-dashboard/package-lock.json
+
+   ▲ Next.js 15.5.12
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 8.5s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/9) ...
+   Generating static pages (2/9) 
+   Generating static pages (4/9) 
+   Generating static pages (6/9) 
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ ✓ Generating static pages (9/9)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     140 kB         287 kB
+├ ○ /_not-found                            997 B         103 kB
+├ ○ /alerts                              3.06 kB         151 kB
+├ ○ /incidents                            3.3 kB         151 kB
+├ ○ /infra                               2.73 kB         141 kB
+├ ○ /insights                            2.26 kB         140 kB
+└ ○ /settings                            2.97 kB         141 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/255-091853b4155593e2.js       45.7 kB
+  ├ chunks/4bd1b696-409494caf8c83275.js  54.2 kB
+  └ other shared chunks (total)          1.94 kB
+
+
+○  (Static)  prerendered as static content
+

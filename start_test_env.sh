@@ -33,7 +33,7 @@ for i in "${!SERVICES[@]}"; do
     ./venv/bin/pip install -r requirements.txt > /dev/null 2>&1
     
     # Run service using the venv uvicorn directly
-    nohup ./venv/bin/uvicorn src.main:app --host 0.0.0.0 --port "$PORT" > "../../logs/${SERVICE}.log" 2>&1 &
+    PYTHONPATH=src nohup ./venv/bin/uvicorn src.main:app --host 0.0.0.0 --port "$PORT" > "../../logs/${SERVICE}.log" 2>&1 &
     
     cd ../..
 done

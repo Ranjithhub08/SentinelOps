@@ -1,12 +1,20 @@
 import json
 import logging
 import threading
+import sys
+import os
 from datetime import datetime
 from typing import Optional
 from kafka import KafkaConsumer
 
-from .schemas import AnalyzedIncident
-from .kafka_producer import AnalyzedIncidentProducer
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../configs")))
+try:
+    import store_client
+except ImportError:
+    pass
+
+from schemas import AnalyzedIncident
+from kafka_producer import AnalyzedIncidentProducer
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +83,7 @@ class IncidentConsumer:
         )
         
         logger.info(f"Analyzed Incident {incident_id}: {root_cause} (Confidence: {confidence})")
+        print(f"[Root Cause] Identified issue: {root_cause}")
         
         # Publish enriched result
         self.analyzed_producer.publish_analyzed_incident(analyzed_incident.dict())

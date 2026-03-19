@@ -5,9 +5,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-from .schemas import IncidentEvent
-from .kafka_producer import IncidentProducer
-from .kafka_consumer import AnomalyConsumer
+from schemas import IncidentEvent
+from kafka_producer import IncidentProducer
+from kafka_consumer import AnomalyConsumer
+from enrichment_consumer import EnrichmentConsumer
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -19,6 +20,8 @@ load_dotenv()
 KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 ANOMALIES_TOPIC = os.getenv("ANOMALIES_TOPIC", "anomalies.detected")
 INCIDENTS_TOPIC = os.getenv("INCIDENTS_TOPIC", "incidents.created")
+ANALYZED_TOPIC = os.getenv("ANALYZED_TOPIC", "incidents.analyzed")
+EXPLAINED_TOPIC = os.getenv("EXPLAINED_TOPIC", "incidents.explained")
 
 app = FastAPI(
     title="Incident Management Service",
@@ -41,6 +44,7 @@ incident_store: Dict[str, IncidentEvent] = {}
 # Global configurations
 incident_producer = None
 anomaly_consumer = None
+enrichment_consumer = None
 
 @app.on_event("startup")
 def startup_event():
@@ -63,6 +67,15 @@ def startup_event():
     
     # Start consuming anomalies in the background
     anomaly_consumer.start()
+    
+    # Initialize and start enrichment consumer (RCA + LLM)
+    enrichment_consumer = EnrichmentConsumer(
+        bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
+        analyzed_topic=ANALYZED_TOPIC,
+        explained_topic=EXPLAINED_TOPIC,
+        incident_store=incident_store
+    )
+    enrichment_consumer.start()
 
 @app.on_event("shutdown")
 def shutdown_event():
@@ -71,6 +84,9 @@ def shutdown_event():
     
     if anomaly_consumer:
         anomaly_consumer.stop()
+        
+    if enrichment_consumer:
+        enrichment_consumer.stop()
         
     if incident_producer:
         incident_producer.close()

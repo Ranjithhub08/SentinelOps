@@ -3,16 +3,20 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Server, Activity, AlertCircle, FileText, Bot, BrainCircuit, ExternalLink, Shield } from 'lucide-react';
-import { Incident } from './IncidentTable';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs));
+interface DetailedIncident {
+    id: string;
+    incident_id: string;
+    service: string;
+    type: string;
+    severity: string;
+    timestamp: string;
+    root_cause?: string;
+    explanation?: string;
+    suggested_action?: string;
 }
 
-export default function IncidentDetailsPanel({ incidentId, onClose }: { incidentId: string, onClose: () => void, incidents: Incident[] }) {
-    const [incident, setIncident] = useState<Incident | null>(null);
+export default function IncidentDetailsPanel({ incidentId, onClose }: { incidentId: string, onClose: () => void }) {
+    const [incident, setIncident] = useState<DetailedIncident | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -22,17 +26,7 @@ export default function IncidentDetailsPanel({ incidentId, onClose }: { incident
                 const res = await fetch(`http://localhost:8004/incidents/${incidentId}`);
                 if (res.ok) {
                     const data = await res.json();
-                    const mockedEnrichedData = {
-                        ...data,
-                        root_cause: data.type === 'HIGH_CPU' ? 'Resource Saturation' :
-                            data.type === 'HIGH_LATENCY' ? 'Downstream Service Congestion' :
-                                'Cluster Node Instability',
-                        explanation: data.type === 'HIGH_CPU' ? 'Core processing units reached 98% utilization, leading to thread contention across the main worker pool.' :
-                            'Response times deviated from the 99th percentile baseline, suggesting a bottleneck in the database connector.',
-                        suggested_action: data.type === 'HIGH_CPU' ? 'Initiate vertical scaling or deploy secondary worker nodes to shard the current load.' :
-                            'Drain the affected node and inspect the connection pool configuration for the secondary database cluster.',
-                    };
-                    setIncident(mockedEnrichedData);
+                    setIncident(data);
                 }
             } catch (err) {
                 console.error(err);

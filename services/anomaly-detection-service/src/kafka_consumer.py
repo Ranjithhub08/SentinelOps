@@ -1,11 +1,19 @@
 import json
 import logging
 import threading
+import sys
+import os
 from typing import Optional
 from kafka import KafkaConsumer
 
-from .schemas import AnomalyEvent
-from .kafka_producer import AnomalyProducer
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../configs")))
+try:
+    import store_client
+except ImportError:
+    pass
+
+from schemas import AnomalyEvent
+from kafka_producer import AnomalyProducer
 
 logger = logging.getLogger(__name__)
 
@@ -108,4 +116,9 @@ class AnomalyConsumer:
         )
         
         logger.warning(f"ANOMALY DETECTED: {anomaly_type} in {service} (Value: {value})")
+        print(f"[Anomaly Service] Detected {anomaly_type} in {service}")
+        try:
+            store_client.update_store("anomalies", anomaly.dict())
+        except NameError:
+            pass
         self.anomaly_producer.publish_anomaly(anomaly.dict())

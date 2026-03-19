@@ -1,0 +1,173 @@
+{
+  "anomalies": [
+    {
+      "service": "SECURITY-VORTEX-01",
+      "type": "HIGH_ERROR_RATE",
+      "value": 0.88,
+      "timestamp": "2026-03-19 13:20:56.227245+00:00"
+    },
+    {
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "HIGH_LATENCY",
+      "value": 5000.0,
+      "timestamp": "2026-03-19 13:12:55.214995+00:00"
+    },
+    {
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "HIGH_CPU",
+      "value": 99.9,
+      "timestamp": "2026-03-19 13:12:55.214995+00:00"
+    },
+    {
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "ERROR_LOG",
+      "value": "CRITICAL: Database connection completely lost! All transactions failing.",
+      "timestamp": "2026-03-19 13:12:55.214995+00:00"
+    }
+  ],
+  "incidents": [
+    {
+      "incident_id": "9061cb9b-d733-44ca-a1e1-6ba91bd1fe11",
+      "service": "SECURITY-VORTEX-01",
+      "type": "HIGH_ERROR_RATE",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "timestamp": "2026-03-19T13:20:56.284444Z",
+      "context": {
+        "anomaly_value": 0.88,
+        "anomaly_timestamp": "2026-03-19 13:20:56.227245+00:00"
+      },
+      "root_cause": "Service instability",
+      "explanation": "An abnormally high number of requests to SECURITY-VORTEX-01 are failing, pointing towards service instability.",
+      "suggested_action": "Review recent deployments or configuration changes. Check the application logs for stack traces."
+    },
+    {
+      "incident_id": "8f325863-df69-46d9-be0e-64a7ad6fc249",
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "HIGH_ERROR_RATE",
+      "severity": "CRITICAL",
+      "status": "OPEN",
+      "timestamp": "2026-03-19T13:12:55.253746Z",
+      "context": {
+        "anomaly_value": 0.95,
+        "anomaly_timestamp": "2026-03-19 13:12:55.214995+00:00"
+      },
+      "root_cause": "Service instability",
+      "explanation": null,
+      "suggested_action": null
+    },
+    {
+      "incident_id": "24ff9308-c8e5-41bc-908d-0b28675822cf",
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "HIGH_LATENCY",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "timestamp": "2026-03-19T13:12:55.249527Z",
+      "context": {
+        "anomaly_value": 5000.0,
+        "anomaly_timestamp": "2026-03-19 13:12:55.214995+00:00"
+      },
+      "root_cause": "Slow downstream dependency",
+      "explanation": "Response times on TITAN-DEMO-SERVICE have spiked significantly, likely due to a slow downstream dependency.",
+      "suggested_action": "Investigate downstream database queries or external API dependencies for bottlenecks."
+    },
+    {
+      "incident_id": "7b06f8c3-f89b-4f96-92cf-0eb09f2e3340",
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "HIGH_CPU",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "timestamp": "2026-03-19T13:12:55.246407Z",
+      "context": {
+        "anomaly_value": 99.9,
+        "anomaly_timestamp": "2026-03-19 13:12:55.214995+00:00"
+      },
+      "root_cause": "Resource saturation",
+      "explanation": "CPU usage exceeded safe limits on TITAN-DEMO-SERVICE, indicating resource saturation.",
+      "suggested_action": "Consider scaling the service horizontally or optimizing resource-intensive operations."
+    },
+    {
+      "incident_id": "5952a311-1be6-4e01-b7fd-7e221e5ba2e4",
+      "service": "TITAN-DEMO-SERVICE",
+      "type": "ERROR_LOG",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "timestamp": "2026-03-19T13:12:55.238576Z",
+      "context": {
+        "anomaly_value": "CRITICAL: Database connection completely lost! All transactions failing.",
+        "anomaly_timestamp": "2026-03-19 13:12:55.214995+00:00"
+      },
+      "root_cause": "Application exception",
+      "explanation": "Critical application exceptions were detected in the log stream for TITAN-DEMO-SERVICE.",
+      "suggested_action": "Inspect the specific log messages to identify the exact code path causing the exception."
+    }
+  ],
+  "explanations": [
+    {
+      "incident_id": "9061cb9b-d733-44ca-a1e1-6ba91bd1fe11",
+      "service": "SECURITY-VORTEX-01",
+      "root_cause": "Service instability",
+      "type": "HIGH_ERROR_RATE",
+      "explanation": "An abnormally high number of requests to SECURITY-VORTEX-01 are failing, pointing towards service instability.",
+      "suggested_action": "Review recent deployments or configuration changes. Check the application logs for stack traces."
+    },
+    {
+      "incident_id": "8f325863-df69-46d9-be0e-64a7ad6fc249",
+      "service": "TITAN-DEMO-SERVICE",
+      "root_cause": "Service instability",
+      "type": "HIGH_ERROR_RATE",
+      "explanation": "An abnormally high number of requests to TITAN-DEMO-SERVICE are failing, pointing towards service instability.",
+      "suggested_action": "Review recent deployments or configuration changes. Check the application logs for stack traces."
+    },
+    {
+      "incident_id": "24ff9308-c8e5-41bc-908d-0b28675822cf",
+      "service": "TITAN-DEMO-SERVICE",
+      "root_cause": "Slow downstream dependency",
+      "type": "HIGH_LATENCY",
+      "explanation": "Response times on TITAN-DEMO-SERVICE have spiked significantly, likely due to a slow downstream dependency.",
+      "suggested_action": "Investigate downstream database queries or external API dependencies for bottlenecks."
+    },
+    {
+      "incident_id": "7b06f8c3-f89b-4f96-92cf-0eb09f2e3340",
+      "service": "TITAN-DEMO-SERVICE",
+      "root_cause": "Resource saturation",
+      "type": "HIGH_CPU",
+      "explanation": "CPU usage exceeded safe limits on TITAN-DEMO-SERVICE, indicating resource saturation.",
+      "suggested_action": "Consider scaling the service horizontally or optimizing resource-intensive operations."
+    },
+    {
+      "incident_id": "5952a311-1be6-4e01-b7fd-7e221e5ba2e4",
+      "service": "TITAN-DEMO-SERVICE",
+      "root_cause": "Application exception",
+      "type": "ERROR_LOG",
+      "explanation": "Critical application exceptions were detected in the log stream for TITAN-DEMO-SERVICE.",
+      "suggested_action": "Inspect the specific log messages to identify the exact code path causing the exception."
+    }
+  ],
+  "alerts": [
+    {
+      "incident_id": "9061cb9b-d733-44ca-a1e1-6ba91bd1fe11",
+      "formatted_message": "\ud83d\udea8 *Incident Detected*\\nService: SECURITY-VORTEX-01\\nRoot Cause: Service instability\\n\\n*Explanation:*\\nAn abnormally high number of requests to SECURITY-VORTEX-01 are failing, pointing towards service instability.\\n\\n*Suggested Action:*\\nReview recent deployments or configuration changes. Check the application logs for stack traces.",
+      "channels": [],
+      "timestamp": "2026-03-19 13:20:56.326622+00:00"
+    },
+    {
+      "incident_id": "8f325863-df69-46d9-be0e-64a7ad6fc249",
+      "formatted_message": "\ud83d\udea8 *Incident Detected*\\nService: TITAN-DEMO-SERVICE\\nRoot Cause: Service instability\\n\\n*Explanation:*\\nAn abnormally high number of requests to TITAN-DEMO-SERVICE are failing, pointing towards service instability.\\n\\n*Suggested Action:*\\nReview recent deployments or configuration changes. Check the application logs for stack traces.",
+      "channels": [],
+      "timestamp": "2026-03-19 13:12:55.267849+00:00"
+    },
+    {
+      "incident_id": "24ff9308-c8e5-41bc-908d-0b28675822cf",
+      "formatted_message": "\ud83d\udea8 *Incident Detected*\\nService: TITAN-DEMO-SERVICE\\nRoot Cause: Slow downstream dependency\\n\\n*Explanation:*\\nResponse times on TITAN-DEMO-SERVICE have spiked significantly, likely due to a slow downstream dependency.\\n\\n*Suggested Action:*\\nInvestigate downstream database queries or external API dependencies for bottlenecks.",
+      "channels": [],
+      "timestamp": "2026-03-19 13:12:55.265173+00:00"
+    },
+    {
+      "incident_id": "5952a311-1be6-4e01-b7fd-7e221e5ba2e4",
+      "formatted_message": "\ud83d\udea8 *Incident Detected*\\nService: TITAN-DEMO-SERVICE\\nRoot Cause: Application exception\\n\\n*Explanation:*\\nCritical application exceptions were detected in the log stream for TITAN-DEMO-SERVICE.\\n\\n*Suggested Action:*\\nInspect the specific log messages to identify the exact code path causing the exception.",
+      "channels": [],
+      "timestamp": "2026-03-19 13:12:55.258954+00:00"
+    }
+  ]
+}

@@ -2,12 +2,20 @@ import json
 import logging
 import threading
 import requests
+import sys
+import os
 from datetime import datetime
 from typing import Optional
 from kafka import KafkaConsumer
 
-from .schemas import AlertEvent
-from .kafka_producer import AlertProducer
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../configs")))
+try:
+    import store_client
+except ImportError:
+    pass
+
+from schemas import AlertEvent
+from kafka_producer import AlertProducer
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +112,11 @@ class ExplainedIncidentConsumer:
         )
         
         logger.info(f"Alerted for incident {incident_id} to channels: {channels_sent}")
+        print(f"[Alert Service] Triggered alert for {incident_id} on {channels_sent}")
+        try:
+            store_client.update_store("alerts", alert_event.dict())
+        except NameError:
+            pass
         self.alert_producer.publish_alert(alert_event.dict())
 
     def _send_slack_alert(self, formatted_message: str) -> bool:

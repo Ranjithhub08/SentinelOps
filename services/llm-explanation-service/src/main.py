@@ -3,9 +3,9 @@ import logging
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
-from .schemas import ExplainedIncident
-from .kafka_producer import ExplainedIncidentProducer
-from .kafka_consumer import AnalyzedIncidentConsumer
+from schemas import ExplainedIncident
+from kafka_producer import ExplainedIncidentProducer
+from kafka_consumer import AnalyzedIncidentConsumer
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

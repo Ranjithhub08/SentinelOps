@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ShieldAlert, 
@@ -16,6 +17,7 @@ import {
 import SystemMetricsCard from '@/components/SystemMetricsCard';
 import IncidentTable from '@/components/IncidentTable';
 import AlertFeed from '@/components/AlertFeed';
+import IncidentAnalyticsPanel from '@/components/IncidentAnalyticsPanel';
 
 const metrics = [
   { 
@@ -53,6 +55,25 @@ const metrics = [
 ];
 
 export default function DashboardPage() {
+  const [liveData, setLiveData] = useState<{ incidents: any[]; alerts: any[] }>({ incidents: [], alerts: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/data');
+        if (res.ok) {
+          const data = await res.json();
+          setLiveData(prev => ({ ...prev, ...data }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch live data:', err);
+      }
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex flex-col space-y-8 p-8 max-w-[1600px] mx-auto min-h-screen relative">
       {/* Animated Noise Texture Overlay */}
@@ -108,6 +129,11 @@ export default function DashboardPage() {
             <SystemMetricsCard metrics={metrics} />
         </div>
 
+        {/* Analytics Visualizations */}
+        <div className="col-span-12">
+            <IncidentAnalyticsPanel />
+        </div>
+
         {/* Main Intelligence Table (Bento Box 1) */}
         <div className="col-span-12 lg:col-span-8">
             <motion.div
@@ -116,7 +142,7 @@ export default function DashboardPage() {
                 transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="h-[600px]"
             >
-                <IncidentTable />
+                <IncidentTable incidents={liveData.incidents.length > 0 ? liveData.incidents : undefined} />
             </motion.div>
         </div>
 
@@ -128,7 +154,7 @@ export default function DashboardPage() {
                 transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="h-[600px]"
             >
-                <AlertFeed />
+                <AlertFeed alerts={liveData.alerts.length > 0 ? liveData.alerts : undefined} />
             </motion.div>
         </div>
 

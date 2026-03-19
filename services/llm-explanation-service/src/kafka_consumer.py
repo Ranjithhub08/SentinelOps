@@ -1,11 +1,19 @@
 import json
 import logging
 import threading
+import sys
+import os
 from typing import Optional
 from kafka import KafkaConsumer
 
-from .schemas import ExplainedIncident
-from .kafka_producer import ExplainedIncidentProducer
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../configs")))
+try:
+    import store_client
+except ImportError:
+    pass
+
+from schemas import ExplainedIncident
+from kafka_producer import ExplainedIncidentProducer
 
 logger = logging.getLogger(__name__)
 
@@ -65,12 +73,27 @@ class AnalyzedIncidentConsumer:
         
         explained_incident = ExplainedIncident(
             incident_id=incident_id,
+            service=service,
+            root_cause=root_cause,
+            type=anomaly_type,
             explanation=explanation,
             suggested_action=action
         )
         
         logger.info(f"Generated explanation for Incident {incident_id}")
+        print(f"[Explanation Service] Generated explanation for {incident_id}")
         
+        # Save to store
+        base_dict = explained_incident.dict()
+        base_dict["service"] = service
+        base_dict["root_cause"] = root_cause
+        base_dict["type"] = anomaly_type
+        
+        try:
+            store_client.update_store("explanations", base_dict)
+        except NameError:
+            pass
+            
         # Publish enriched result
         self.explained_producer.publish_explained_incident(explained_incident.dict())
 

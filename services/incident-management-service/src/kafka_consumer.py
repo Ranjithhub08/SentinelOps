@@ -2,12 +2,20 @@ import json
 import logging
 import threading
 import uuid
+import sys
+import os
 from datetime import datetime
 from typing import Optional, Dict
 from kafka import KafkaConsumer
 
-from .schemas import IncidentEvent
-from .kafka_producer import IncidentProducer
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../configs")))
+try:
+    import store_client
+except ImportError:
+    pass
+
+from schemas import IncidentEvent
+from kafka_producer import IncidentProducer
 
 logger = logging.getLogger(__name__)
 
@@ -79,9 +87,14 @@ class AnomalyConsumer:
         )
         
         logger.info(f"Created new incident {incident_id} [{severity}] for service {service}")
+        print(f"[Incident Service] Created incident {incident_id} for {service}")
         
         # 1. Update In-Memory Store
         self.incident_store[incident_id] = incident
+        try:
+            store_client.update_store("incidents", json.loads(incident.json()))
+        except NameError:
+            pass
         
         # 2. Publish to Kafka
         self.incident_producer.publish_incident(incident.dict())

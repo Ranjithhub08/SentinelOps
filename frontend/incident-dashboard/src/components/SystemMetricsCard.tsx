@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -26,6 +27,12 @@ interface SystemMetricsCardProps {
 }
 
 export default function SystemMetricsCard({ metrics }: SystemMetricsCardProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {metrics.map((metric, index) => (
@@ -71,27 +78,31 @@ export default function SystemMetricsCard({ metrics }: SystemMetricsCardProps) {
           {/* Animated Sparkline (Simulated with SVG Path) */}
           <div className="mt-6 h-12 w-full">
             <svg className="w-full h-full overflow-visible" viewBox="0 0 100 20">
-              <motion.path
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 2, delay: 0.5 + index * 0.1, ease: "easeInOut" }}
-                d={`M 0 ${10 + Math.random() * 5} Q 25 ${Math.random() * 20} 50 10 T 100 ${5 + Math.random() * 10}`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className={cn("opacity-30 group-hover:opacity-60 transition-opacity duration-700", metric.color)}
-              />
-              {/* Glow effect for the path */}
-              <motion.path
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 0.2 }}
-                transition={{ duration: 2, delay: 0.5 + index * 0.1, ease: "easeInOut" }}
-                d={`M 0 ${10 + Math.random() * 5} Q 25 ${Math.random() * 20} 50 10 T 100 ${5 + Math.random() * 10}`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                className={cn("blur-md transition-opacity duration-700", metric.color)}
-              />
+              {mounted && (
+                <>
+                  <motion.path
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 2, delay: 0.5 + index * 0.1, ease: "easeInOut" }}
+                    d={`M 0 ${10 + Math.random() * 5} Q 25 ${Math.random() * 20} 50 10 T 100 ${5 + Math.random() * 10}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    className={cn("opacity-30 group-hover:opacity-60 transition-opacity duration-700", metric.color)}
+                  />
+                  {/* Glow effect for the path */}
+                  <motion.path
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 0.2 }}
+                    transition={{ duration: 2, delay: 0.5 + index * 0.1, ease: "easeInOut" }}
+                    d={`M 0 ${10 + Math.random() * 5} Q 25 ${Math.random() * 20} 50 10 T 100 ${5 + Math.random() * 10}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    className={cn("blur-md transition-opacity duration-700", metric.color)}
+                  />
+                </>
+              )}
             </svg>
           </div>
 

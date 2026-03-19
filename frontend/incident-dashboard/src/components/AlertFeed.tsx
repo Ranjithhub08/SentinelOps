@@ -37,7 +37,7 @@ const mockAlerts: Alert[] = [
     { id: '5', type: 'security', message: 'Root access attempt on jump-server-01', timestamp: '25 mins ago', service: 'IAM-Audit', severity: 'critical' },
 ];
 
-export default function AlertFeed() {
+export default function AlertFeed({ alerts = mockAlerts }: { alerts?: any[] }) {
     const getIcon = (type: string) => {
         switch (type) {
             case 'security': return ShieldAlertIcon;
@@ -80,7 +80,15 @@ export default function AlertFeed() {
 
                 <div className="space-y-8 relative">
                     <AnimatePresence initial={false}>
-                        {mockAlerts.map((alert, index) => {
+                        {alerts.slice(0, 50).map((rawAlert, index) => {
+                            const alert = {
+                                id: rawAlert.incident_id || rawAlert.id,
+                                type: rawAlert.type || 'security',
+                                message: rawAlert.formatted_message || rawAlert.message,
+                                timestamp: rawAlert.timestamp,
+                                service: rawAlert.channels ? `Alert -> ${rawAlert.channels.join(',')}` : 'Alert Dispatcher',
+                                severity: 'critical'
+                            };
                             const Icon = getIcon(alert.type);
                             return (
                                 <motion.div

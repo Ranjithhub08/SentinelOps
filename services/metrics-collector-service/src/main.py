@@ -3,8 +3,8 @@ import logging
 from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv
 
-from .schemas import MetricsEntry
-from .kafka_producer import MetricsProducer
+from schemas import MetricsEntry
+from kafka_producer import MetricsProducer
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")

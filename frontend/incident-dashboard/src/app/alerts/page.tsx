@@ -1,10 +1,30 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AlertFeed from '@/components/AlertFeed';
 import { Bell, Activity, Clock, Search } from 'lucide-react';
 
 export default function AlertsPage() {
+    const [liveData, setLiveData] = useState<{ alerts: any[] }>({ alerts: [] });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch('/api/data');
+                if (res.ok) {
+                    const data = await res.json();
+                    setLiveData(prev => ({ ...prev, ...data }));
+                }
+            } catch (err) {
+                console.error('Failed to fetch live data:', err);
+            }
+        };
+        fetchData();
+        const interval = setInterval(fetchData, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className="h-full flex flex-col space-y-8 relative overflow-visible">
             {/* Header Section */}
@@ -56,7 +76,7 @@ export default function AlertsPage() {
                 className="flex-1 min-h-0 relative max-w-4xl"
             >
                 <div className="absolute -inset-4 bg-amber-500/[0.01] blur-3xl -z-10 rounded-[3rem]" />
-                <AlertFeed />
+                <AlertFeed alerts={liveData.alerts.length > 0 ? liveData.alerts : undefined} />
             </motion.div>
         </div>
     );

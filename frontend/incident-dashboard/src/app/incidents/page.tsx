@@ -1,10 +1,30 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import IncidentTable from '@/components/IncidentTable';
 import { ShieldAlert, Terminal, Filter, Download } from 'lucide-react';
 
 export default function IncidentsPage() {
+    const [liveData, setLiveData] = useState<{ incidents: any[] }>({ incidents: [] });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch('/api/data');
+                if (res.ok) {
+                    const data = await res.json();
+                    setLiveData(prev => ({ ...prev, ...data }));
+                }
+            } catch (err) {
+                console.error('Failed to fetch live data:', err);
+            }
+        };
+        fetchData();
+        const interval = setInterval(fetchData, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className="h-full flex flex-col space-y-8 relative overflow-visible">
             {/* Header Section */}
@@ -52,7 +72,7 @@ export default function IncidentsPage() {
                 className="flex-1 min-h-0 relative"
             >
                 <div className="absolute -inset-4 bg-indigo-500/[0.02] blur-3xl -z-10 rounded-[3rem]" />
-                <IncidentTable />
+                <IncidentTable incidents={liveData.incidents.length > 0 ? liveData.incidents : undefined} />
             </motion.div>
         </div>
     );

@@ -16,7 +16,7 @@ def trigger_security_incident():
     log_data = {
         "service": service,
         "timestamp": timestamp,
-        "level": "CRITICAL",
+        "level": "ERROR",
         "message": "SECURITY ALERT: Multiple failed root login attempts detected from unauthorized IP 192.168.1.50"
     }
     try:

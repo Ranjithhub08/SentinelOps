@@ -10,12 +10,12 @@ ANOMALIES_TOPIC = 'anomalies.detected'
 
 # Sample data for simulation
 SERVICES = ['payment-api', 'auth-service', 'inventory-db', 'gateway-node', 'recommendation-engine']
+# Only include types that are handled end-to-end by the RCA and LLM services
 ANOMALY_TYPES = [
     ('HIGH_CPU', '98.5%'),
     ('HIGH_LATENCY', '2500ms'),
     ('HIGH_ERROR_RATE', '15%'),
-    ('MEMORY_LEAK', '92% utilization'),
-    ('REST_API_FAILURE', '503 Service Unavailable')
+    ('ERROR_LOG', 'Critical application exception detected'),
 ]
 
 def simulate():

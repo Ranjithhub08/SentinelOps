@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 class AnomalyConsumer:
     def __init__(self, bootstrap_servers: str, logs_topic: str, metrics_topic: str, anomaly_producer: AnomalyProducer):
         self.bootstrap_servers = bootstrap_servers
+        self.logs_topic = logs_topic
+        self.metrics_topic = metrics_topic
         self.topics = [logs_topic, metrics_topic]
         self.anomaly_producer = anomaly_producer
         self._stop_event = threading.Event()
@@ -51,9 +53,9 @@ class AnomalyConsumer:
                 topic = message.topic
                 
                 # Route the message to the appropriate heuristic checker
-                if topic == "logs.raw":
+                if topic == self.logs_topic:
                     self._process_log(payload)
-                elif topic == "metrics.raw":
+                elif topic == self.metrics_topic:
                     self._process_metric(payload)
                 
             consumer.close()

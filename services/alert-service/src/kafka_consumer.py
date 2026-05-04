@@ -83,12 +83,12 @@ class ExplainedIncidentConsumer:
 
         # 2. Format Message
         message = (
-            f"🚨 *Incident Detected*\\n"
-            f"Service: {service}\\n"
-            f"Root Cause: {root_cause}\\n\\n"
-            f"*Explanation:*\\n"
-            f"{explanation}\\n\\n"
-            f"*Suggested Action:*\\n"
+            f"🚨 *Incident Detected*\n"
+            f"Service: {service}\n"
+            f"Root Cause: {root_cause}\n\n"
+            f"*Explanation:*\n"
+            f"{explanation}\n\n"
+            f"*Suggested Action:*\n"
             f"{action}"
         )
 

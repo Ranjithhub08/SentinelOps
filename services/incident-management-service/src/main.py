@@ -48,7 +48,7 @@ enrichment_consumer = None
 
 @app.on_event("startup")
 def startup_event():
-    global incident_producer, anomaly_consumer
+    global incident_producer, anomaly_consumer, enrichment_consumer
     logger.info("Initializing Incident Management Service...")
     
     # Initialize the producer (for outgoing incident events)
@@ -79,7 +79,7 @@ def startup_event():
 
 @app.on_event("shutdown")
 def shutdown_event():
-    global incident_producer, anomaly_consumer
+    global incident_producer, anomaly_consumer, enrichment_consumer
     logger.info("Shutting down Incident Management Service...")
     
     if anomaly_consumer:

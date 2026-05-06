@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ["var(--font-inter)"],
-        outfit: ["var(--font-outfit)"],
+        inter: ["var(--font-geist-sans)"],
+        outfit: ["var(--font-geist-mono)"],
       },
       colors: {
         background: "var(--background)",

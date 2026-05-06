@@ -1,6 +1,7 @@
 'use client';
 
-import { Inter, Outfit } from 'next/font/google';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,9 +9,6 @@ import Sidebar from '@/components/Sidebar';
 import TopNav from '@/components/TopNav';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -29,8 +27,8 @@ export default function RootLayout({
         <title>SentinelOps | Premium AI Observability</title>
       </head>
       <body className={cn(
-        inter.variable, 
-        outfit.variable, 
+        GeistSans.variable,
+        GeistMono.variable,
         "font-sans flex h-screen overflow-hidden bg-[#020617]"
       )}>
         {/* Decorative Background Elements */}

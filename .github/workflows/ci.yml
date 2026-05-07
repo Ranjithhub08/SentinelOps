@@ -72,3 +72,18 @@ jobs:
           echo "Building Docker images for all services..."
           # docker build -t sentinelops-log-ingestion ./services/log-ingestion-service
           # This is a placeholder for actual docker build commands
+
+  anomaly-unit-tests:
+    name: Anomaly Detection - Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run anomaly detection tests
+        run: python -m pytest services/anomaly-detection-service/tests/ -v --tb=short

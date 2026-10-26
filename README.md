@@ -101,7 +101,10 @@ Each layer of SentinelOps is decoupled for maximum maintainability:
 - **Backend**: Python, FastAPI, Pydantic, Uvicorn
 - **Messaging**: Apache Kafka, Zookeeper
 - **Frontend**: Next.js 14, React, Framer Motion, Tailwind CSS
-- **Infrastructure**: Docker, Docker Compose
+- **Infrastructure**: Docker, Docker Compose, Kubernetes
+- **Monitoring**: Prometheus, Grafana
+- **CI/CD**: GitHub Actions, flake8, pytest
+- **CI/CD**: GitHub Actions, flake8, pytest
 
 ## ⚡ Running Locally
 

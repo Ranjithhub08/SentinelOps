@@ -151,12 +151,16 @@ SentinelOps is built for cloud-native orchestration. Kubernetes manifests are pr
 
 Each service is defined with a `deployment.yaml` for self-healing scaling and a `service.yaml` for cluster-internal discovery.
 
+## ✅ Already Implemented
+- Prometheus monitoring (`infrastructure/monitoring/`)
+- Grafana dashboards (`infrastructure/monitoring/grafana-dashboard.json`)
+- Kubernetes deployment manifests (`infrastructure/kubernetes/`)
+- CI/CD pipeline with GitHub Actions (`.github/workflows/ci.yml`)
+
 ## 🔮 Future Roadmap
-- Prometheus monitoring
-- Grafana dashboards
-- Kubernetes deployment
-- Distributed tracing
-- CI/CD pipeline with GitHub Actions
+- Distributed tracing (OpenTelemetry)
+- Docker image push to registry in CI
+- Auto-scaling based on Kafka consumer lag
 
 ---
 <p align="center">
